@@ -10,7 +10,7 @@ model = YOLO('bale_model.pt')
 
 # Twilio credentials (replace with your actual credentials)
 ACCOUNT_SID = "ACb9195ee49a5fddf63130178973ed4185"
-AUTH_TOKEN = "567e93b1987e0340c8860161b35cc650"
+AUTH_TOKEN = "533e02dc49560d470fd5beb40ba69471"
 FROM_WHATSAPP_NUMBER = 'whatsapp:+14155238886'
 client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
@@ -24,38 +24,24 @@ if 'detection_active' not in st.session_state:
 # Streamlit app
 st.title("YOLO Object Detection Desktop App")
 
-# RTSP link or video file input section
-input_type = st.radio("Choose input type:", ("RTSP Link", "Video File"))
-
-rtsp_link = None
-uploaded_file = None
-
-if input_type == "RTSP Link":
-    rtsp_link = st.text_input("Enter RTSP link (e.g., rtsp://<username>:<password>@<ip>:<port>/<stream>)")
-else:
-    uploaded_file = st.file_uploader("Upload a video file", type=["mp4", "avi", "mov"])
+# RTSP link input section
+rtsp_link = st.text_input("Enter RTSP link (e.g., rtsp://<username>:<password>@<ip>:<port>/<stream>)")
 
 # Phone number input
 phone_number = st.text_input("Enter your phone number with country code (e.g., +123456789)")
 
-if (rtsp_link or uploaded_file) and phone_number:
+if rtsp_link and phone_number:
     if st.button("Start Detection"):
         # Reset count and set detection as active
         st.session_state.detection_active = True
         st.session_state.object_count = 0  # Reset the object count before starting detection
 
-        # Capture video from the RTSP link or uploaded file
-        if rtsp_link:
-            cap = cv2.VideoCapture(rtsp_link)
-        elif uploaded_file:
-            temp_video_path = "temp_uploaded_video.mp4"
-            with open(temp_video_path, "wb") as f:
-                f.write(uploaded_file.read())
-            cap = cv2.VideoCapture(temp_video_path)
+        # Capture video from the RTSP link
+        cap = cv2.VideoCapture(rtsp_link)
 
-        # Check if the video stream is accessible
+        # Check if the RTSP stream is accessible
         if not cap.isOpened():
-            st.error("Error: Unable to access the video stream. Check the input and try again.")
+            st.error("Error: Unable to access the RTSP stream. Check the link and try again.")
         else:
             # Get video properties
             fps = int(cap.get(cv2.CAP_PROP_FPS))
@@ -63,7 +49,7 @@ if (rtsp_link or uploaded_file) and phone_number:
             height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
             # Define the codec and create VideoWriter object
-            output_path = 'output_detection.mp4'
+            output_path = 'output_detection3.mp4'
             fourcc = cv2.VideoWriter_fourcc(*'mp4v')
             out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
 
@@ -135,10 +121,6 @@ if (rtsp_link or uploaded_file) and phone_number:
 
             cap.release()
             out.release()
-
-            # Clean up temp video file if uploaded
-            if uploaded_file:
-                os.remove(temp_video_path)
 
             # Detection complete
             st.success(f"Detection complete. Total objects detected: {st.session_state.object_count}")
