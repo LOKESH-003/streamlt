@@ -247,7 +247,7 @@ def perform_detection():
                                 if bbox_width > 50 and bbox_height > 50:
                                     if cv2.pointPolygonTest(np.array(zone, np.int32), (centroid_x, centroid_y), False) >= 0:
                                         if not is_frame_recent(frame_index, recent_frames):
-                                            if bbox_height > 64:
+                                            if bbox_height > 75:
                                                 st.session_state.object_count += 2  # Large object count as 2
                                             else:
                                                 st.session_state.object_count += 1  # Normal object count as 1
