@@ -13,7 +13,7 @@ model = YOLO('bale_model.pt')
 
 # Twilio credentials (replace with your actual credentials)
 ACCOUNT_SID = "ACb9195ee49a5fddf63130178973ed4185"
-AUTH_TOKEN = "e7a2f7812787a31f231f6016259588da"
+AUTH_TOKEN = "fae8b5a4d02b2c37ed1455d9d6cffe9c"
 FROM_WHATSAPP_NUMBER = 'whatsapp:+14155238886'
 client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
