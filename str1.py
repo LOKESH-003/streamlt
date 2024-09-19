@@ -13,7 +13,7 @@ model = YOLO('bale_model.pt')
 
 # Twilio credentials (replace with your actual credentials)
 ACCOUNT_SID = "ACb9195ee49a5fddf63130178973ed4185"
-AUTH_TOKEN = "8f0116aecf309f18a4cb97dd7497f3c1"
+AUTH_TOKEN = "e7a2f7812787a31f231f6016259588da"
 FROM_WHATSAPP_NUMBER = 'whatsapp:+14155238886'
 client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
@@ -185,7 +185,10 @@ def perform_detection():
             else:
                 fps = int(cap.get(cv2.CAP_PROP_FPS))
                 width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+                print("width ----->",width)
                 height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                print("height ----->",height)
+
                 folder_path = 'output_videos'
                 os.makedirs(folder_path, exist_ok=True)
                 output_path = os.path.join(folder_path, 'output_detection.mp4')
@@ -247,7 +250,7 @@ def perform_detection():
                                 if bbox_width > 50 and bbox_height > 50:
                                     if cv2.pointPolygonTest(np.array(zone, np.int32), (centroid_x, centroid_y), False) >= 0:
                                         if not is_frame_recent(frame_index, recent_frames):
-                                            if bbox_height > 85:
+                                            if bbox_height > 75:
                                                 st.session_state.object_count += 2  # Large object count as 2
                                             else:
                                                 st.session_state.object_count += 1  # Normal object count as 1
