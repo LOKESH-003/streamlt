@@ -268,7 +268,7 @@ def perform_detection():
 
                 cap.release()
                 out.release()
-                # cv2.destroyAllWindows()
+                cv2.destroyAllWindows()
                 st.session_state.detection_started = False
                 send_whatsapp_message(st.session_state.object_count, phone_number)
                 if recipient_emails:
