@@ -167,13 +167,13 @@ def perform_detection():
             send_email_notifications(st.session_state.object_count, recipient_emails)
         st.success(f"Detection stopped. Total objects detected: {st.session_state.object_count}")
         st.session_state.page= "communication"
-    if (http_stream or uploaded_file) :
+    if (http_stream or uploaded_file) and phone_number:
         if st.button("Start Detection"):
             st.session_state.object_count = 0
             st.session_state.detection_started = True
 
             if http_stream:
-                cap = cv2.VideoCapture(http_stream,cv2.CAP_FFMPEG)
+                cap = cv2.VideoCapture(http_stream)#,cv2.CAP_FFMPEG
             elif uploaded_file:
                 temp_video_path = "temp_uploaded_video.mp4"
                 with open(temp_video_path, "wb") as f:
